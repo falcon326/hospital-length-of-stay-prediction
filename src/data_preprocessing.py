@@ -10,17 +10,17 @@ from sklearn.impute import SimpleImputer
 
 
 def find_dataset_path(data_dir: str = "data") -> str:
-    """data klasöründeki ilk CSV dosyasını bulur."""
+    """Finds the first CSV file in the data directory."""
     csv_files = glob.glob(os.path.join(data_dir, "*.csv"))
     if not csv_files:
         raise FileNotFoundError(
-            f"'{data_dir}' klasöründe CSV dosyası bulunamadı. Lütfen Kaggle veri setini bu klasöre ekleyin."
+            f"No CSV file found in the '{data_dir}' directory. Please add the Kaggle dataset here."
         )
     return csv_files[0]
 
 
 def load_data(filepath: str = None) -> pd.DataFrame:
-    """Veri setini yükler ve sütun isimlerini standartlaştırır."""
+    """Loads the dataset and standardizes column names."""
     if filepath is None:
         filepath = find_dataset_path()
     df = pd.read_csv(filepath)
@@ -29,14 +29,14 @@ def load_data(filepath: str = None) -> pd.DataFrame:
 
 
 def engineer_features(df: pd.DataFrame) -> pd.DataFrame:
-    """Microsoft Hospital Length of Stay veri seti için özellik mühendisliği uygular."""
+    """Applies feature engineering for the Microsoft Hospital Length of Stay dataset."""
     df = df.copy()
 
-    # Kimlik ve sızıntı (data leakage) yaratabilecek tarih/ID sütunlarını çıkar
+    # Drop ID and date columns that could cause data leakage
     drop_cols = ["eid", "vdate", "discharged"]
     df = df.drop(columns=[c for c in drop_cols if c in df.columns], errors="ignore")
 
-    # Kronik hastalık / komorbidite sütunları (Microsoft LoS veri seti standart sütunları)
+    # Comorbidity / chronic condition columns (standard Microsoft LoS columns)
     comorbidity_cols = [
         "dialysisrenalendstage", "asthma", "irondef", "pneum",
         "substancedependence", "psychologicaldisordermajor",
@@ -45,18 +45,18 @@ def engineer_features(df: pd.DataFrame) -> pd.DataFrame:
     existing_comorbidities = [c for c in comorbidity_cols if c in df.columns]
 
     if existing_comorbidities:
-        # Mevcut veride bazı sütunlar string/binary olabilir, sayısal hale getirelim
+        # Ensure comorbidity columns are numeric
         for col in existing_comorbidities:
             df[col] = pd.to_numeric(df[col], errors="coerce").fillna(0)
         df["total_comorbidities"] = df[existing_comorbidities].sum(axis=1)
         df["has_comorbidity"] = (df["total_comorbidities"] > 0).astype(int)
 
-    # Tekrar yatış sayısı (rcount) temizliği ('5+' -> 5)
+    # Clean readmission count ('5+' -> 5)
     if "rcount" in df.columns:
         df["rcount"] = df["rcount"].astype(str).str.replace("+", "", regex=False)
         df["rcount"] = pd.to_numeric(df["rcount"], errors="coerce").fillna(0)
 
-    # Vital bulgular ve laboratuvar değerlerinden türetilmiş klinik göstergeler
+    # Derive clinical indicators from vitals and lab values
     if {"hematocrit", "neutrophils"}.issubset(df.columns):
         df["hema_neut_ratio"] = df["hematocrit"] / (df["neutrophils"] + 1e-5)
 
@@ -70,7 +70,7 @@ def engineer_features(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def build_preprocessor(X: pd.DataFrame) -> ColumnTransformer:
-    """Sayısal ve kategorik değişkenler için ön işleme pipeline'ı oluşturur."""
+    """Builds the preprocessing pipeline for numerical and categorical features."""
     numeric_features = X.select_dtypes(include=["int64", "float64", "int32", "float32"]).columns.tolist()
     categorical_features = X.select_dtypes(include=["object", "category", "bool"]).columns.tolist()
 
@@ -94,12 +94,12 @@ def build_preprocessor(X: pd.DataFrame) -> ColumnTransformer:
 
 
 def prepare_train_test_data(filepath: str = None, target_col: str = "lengthofstay", test_size: float = 0.2, random_state: int = 42):
-    """Veriyi yükler, özellik mühendisliği yapar ve eğitim/test setlerine ayırır."""
+    """Loads data, applies feature engineering, and splits into train/test sets."""
     df = load_data(filepath)
     df = engineer_features(df)
 
     if target_col not in df.columns:
-        raise ValueError(f"Hedef sütun '{target_col}' veri setinde bulunamadı. Mevcut sütunlar: {list(df.columns)}")
+        raise ValueError(f"Target column '{target_col}' not found in dataset. Available columns: {list(df.columns)}")
 
     df = df.dropna(subset=[target_col])
     X = df.drop(columns=[target_col])
