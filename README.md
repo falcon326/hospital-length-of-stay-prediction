@@ -43,7 +43,7 @@ hospital-length-of-stay-prediction/
 
 ---
 
-## 🚀 Installation and Usage
+## Installation and Usage
 
 ### 1. Clone the Repository and Set Up the Environment
 ```bash
@@ -59,25 +59,25 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 2. Veri Setini Ekleyin
-Kaggle üzerinden indirdiğiniz [Hospital Length of Stay Dataset Microsoft](https://www.kaggle.com/datasets/aayushchou/hospital-length-of-stay-dataset-microsoft) `.csv` dosyasını `data/` klasörünün içine yerleştirin.
+### 2. Add the Dataset
+Place the `.csv` file you downloaded from Kaggle [Hospital Length of Stay Dataset Microsoft](https://www.kaggle.com/datasets/aayushchou/hospital-length-of-stay-dataset-microsoft)  into the `data/` directory.
 
-### 3. Modeli Eğitin
+### 3. Train the Model
 ```bash
 python src/train.py
 ```
-Bu komut çalıştırıldığında veriler işlenir, modeller eğitilir, hiperparametre optimizasyonu yapılır ve en başarılı model `models/best_los_model.joblib` olarak kaydedilir.
+Running this command processes the data, trains the models, performs hyperparameter optimization, and saves the best-performing model to `models/best_los_model.joblib`.
 
-### 4. Örnek Tahmin Yapın
+### 4. Make Predictions with Sample Data
 ```bash
 python src/predict.py
 ```
 
 ---
 
-## 📊 Değerlendirme Metrikleri
+## Evaluation Metrics
 
-Modeller regresyon problemi kapsamında aşağıdaki metriklerle değerlendirilmektedir:
-* **RMSE (Root Mean Squared Error):** Büyük tahmin hatalarını cezalandıran kök ortalama kare hata.
-* **MAE (Mean Absolute Error):** Tahminlerin gerçek kalış süresinden ortalama gün bazında sapması.
-* **$R^2$ Skoru:** Modelin hedef değişkendeki varyansı açıklama oranı.
+The models are evaluated under the regression framework using the following metrics:
+* **RMSE (Root Mean Squared Error):** Penalizes larger prediction errors.
+* **MAE (Mean Absolute Error):** Average absolute deviation of predictions from the actual length of stay in days.
+* **R^2 Score:** Proportion of variance in the target variable explained by the model.
