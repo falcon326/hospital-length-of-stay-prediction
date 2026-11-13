@@ -21,9 +21,9 @@ def evaluate_predictions(y_true, y_pred) -> dict:
 
 
 def train_and_evaluate():
-    print("1. Veri yükleniyor ve ön işleme hazırlanıyor...")
+    print("1. Loading data and preparing preprocessing pipeline...")
     X_train, X_test, y_train, y_test, preprocessor = prepare_train_test_data()
-    print(f"Eğitim seti boyutu: {X_train.shape}, Test seti boyutu: {X_test.shape}")
+    print(f"Training set shape: {X_train.shape}, Test set shape: {X_test.shape}")
 
     models = {
         "Ridge_Regression": Ridge(alpha=1.0),
@@ -46,7 +46,7 @@ def train_and_evaluate():
     best_r2 = -np.inf
     best_pipeline = None
 
-    print("\n2. Modeller eğitiliyor ve değerlendiriliyor...")
+    print("\n2. Training and evaluating models...")
     for name, regressor in models.items():
         pipe = Pipeline(steps=[
             ("preprocessor", preprocessor),
@@ -63,7 +63,7 @@ def train_and_evaluate():
             best_model_name = name
             best_pipeline = pipe
 
-    print("\n3. XGBoost için Hiperparametre Optimizasyonu (RandomizedSearchCV) çalıştırılıyor...")
+    print("\n3. Running Hyperparameter Optimization (RandomizedSearchCV) for XGBoost...")
     xgb_pipe = Pipeline(steps=[
         ("preprocessor", preprocessor),
         ("model", XGBRegressor(random_state=42, n_jobs=-1))
@@ -106,8 +106,8 @@ def train_and_evaluate():
     with open("reports/metrics.json", "w", encoding="utf-8") as f:
         json.dump(results, f, indent=4, ensure_ascii=False)
 
-    print(f"\nEn iyi model ({best_model_name}) '{model_path}' konumuna kaydedildi!")
-    print("Metrikler 'reports/metrics.json' dosyasına yazıldı.")
+    print(f"\nBest model ({best_model_name}) saved to '{model_path}'!")
+    print("Metrics written to 'reports/metrics.json'.")
 
 
 if __name__ == "__main__":
