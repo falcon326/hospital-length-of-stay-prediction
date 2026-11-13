@@ -4,7 +4,7 @@ from data_preprocessing import engineer_features
 
 
 def predict_patient_los(patient_data: dict, model_path: str = "models/best_los_model.joblib") -> float:
-    """Tek bir hastanın verisini alarak tahmini yatış süresini (gün) döndürür."""
+    """Takes a patient's data dictionary and returns the predicted length of stay (in days)."""
     model = joblib.load(model_path)
     df = pd.DataFrame([patient_data])
     df.columns = [c.strip().lower() for c in df.columns]
@@ -14,7 +14,7 @@ def predict_patient_los(patient_data: dict, model_path: str = "models/best_los_m
 
 
 if __name__ == "__main__":
-    # Örnek bir hasta profili ile test
+    # Test with a sample patient profile
     sample_patient = {
         "rcount": "2",
         "gender": "F",
@@ -44,6 +44,6 @@ if __name__ == "__main__":
 
     try:
         estimated_days = predict_patient_los(sample_patient)
-        print(f"Tahmini Hastanede Kalış Süresi: {estimated_days} gün")
+        print(f"Estimated Hospital Length of Stay: {estimated_days} days")
     except FileNotFoundError:
-        print("Önce 'python src/train.py' komutunu çalıştırarak modeli eğitmelisiniz.")
+        print("You must train the model first by running 'python src/train.py'.")
