@@ -1,12 +1,12 @@
-# 🏥 Hastaneye Yatış Süresi Tahminleme Modeli (Healthcare Length of Stay Prediction)
+# Healthcare Length of Stay Prediction Model
 
-Sağlık kurumlarında hastaların hastanede kalış süresini (**Length of Stay - LoS**) önceden tahmin etmek; yatak doluluk oranlarının optimize edilmesi, personel planlaması ve operasyonel maliyetlerin düşürülmesi açısından kritik öneme sahiptir.
+Accurately predicting patient **Length of Stay (LoS)** in healthcare institutions is critical for optimizing bed occupancy rates, streamlining staff planning, and reducing operational costs.
 
-Bu proje, **Microsoft Hospital Length of Stay** (100.000 hasta kaydı) veri setini kullanarak hastaların demografik özelliklerine, kronik rahatsızlıklarına ve laboratuvar bulgularına dayalı olarak hastanede kalış süresini (gün cinsinden) tahmin eden uçtan uca bir makine öğrenmesi çözümüdür.
+This project is an end-to-end machine learning solution that predicts a patient's hospital length of stay (in days) based on demographic information, chronic conditions, and laboratory results using the **Microsoft Hospital Length of Stay** dataset (100,000 patient records).
 
 ---
 
-## 📁 Proje Klasör Yapısı
+## Project Directory Structure
 
 ```text
 hospital-length-of-stay-prediction/
