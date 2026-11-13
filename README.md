@@ -10,18 +10,18 @@ This project is an end-to-end machine learning solution that predicts a patient'
 
 ```text
 hospital-length-of-stay-prediction/
-├── data/                   # Kaggle veri setinin yerleştirileceği klasör
+├── data/                   # Directory where the Kaggle dataset should be placed
 │   └── README.md
-├── models/                 # Eğitilen modellerin (.joblib) kaydedildiği klasör
-├── notebooks/              # Keşifsel Veri Analizi (EDA) ve görselleştirme notebook'ları
+├── models/                 # Directory where trained models (.joblib) are saved
+├── notebooks/              # Exploratory Data Analysis (EDA) and visualization notebooks
 │   └── 01_eda_and_modeling.ipynb
-├── reports/                # Model metrikleri ve görselleştirme çıktıları
+├── reports/                # Model metrics and visualization outputs
 │   └── figures/
-├── src/                    # Modüler Python kaynak kodları
+├── src/                    # Modular Python source codes
 │   ├── __init__.py
-│   ├── data_preprocessing.py  # Veri temizleme, özellik mühendisliği ve pipeline
-│   ├── train.py               # Model eğitimi, karşılaştırma ve hiperparametre optimizasyonu
-│   └── predict.py             # Yeni hasta verisi ile tahminleme modülü
+│   ├── data_preprocessing.py  # Data cleaning, feature engineering, and pipeline
+│   ├── train.py               # Model training, comparison, and hyperparameter tuning
+│   └── predict.py             # Prediction module for new patient data
 ├── .gitignore
 ├── requirements.txt
 └── README.md
@@ -29,31 +29,31 @@ hospital-length-of-stay-prediction/
 
 ---
 
-## 🛠️ Kullanılan Teknolojiler ve Metodoloji
+## Technologies and Methodology Used
 
-* **Veri Manipülasyonu & Analiz:** `Pandas`, `NumPy`
-* **Görselleştirme:** `Matplotlib`, `Seaborn`
-* **Makine Öğrenmesi:** `Scikit-Learn`, `XGBoost`
-* **Özellik Mühendisliği (Feature Engineering):**
-  * Kronik hastalık/komorbidite göstergelerinin birleştirilmesi (`total_comorbidities`, `has_comorbidity`)
-  * Klinik oranların türetilmesi (`hema_neut_ratio`, `bmi_pulse_interaction`)
-  * Tekrar yatış sayılarının (`rcount`) sayısal formata dönüştürülmesi
-  * `ColumnTransformer` ve `Pipeline` mimarisi ile veri sızıntısını (data leakage) önleyen ölçeklendirme (`StandardScaler`) ve kodlama (`OneHotEncoder`)
-* **Modelleme & Optimizasyon:** Ridge Regression, Random Forest ve XGBoost algoritmaları kıyaslanmış; `RandomizedSearchCV` ile hiperparametre optimizasyonu uygulanmıştır.
+* **Data Manipulation & Analysis:** `Pandas`, `NumPy`
+* **Visualization:** `Matplotlib`, `Seaborn`
+* **Machine Learning:** `Scikit-Learn`, `XGBoost`
+* **Feature Engineering:**
+  * Combining chronic disease/comorbidity indicators (`total_comorbidities`, `has_comorbidity`)
+  * Deriving clinical ratios (`hema_neut_ratio`, `bmi_pulse_interaction`)
+  * Converting readmission counts (`rcount`) into a numeric format
+  * Preventing data leakage using `ColumnTransformer` and `Pipeline` rchitecture with (`StandardScaler`) and (`OneHotEncoder`)
+* **Modeling & Optimization:** Compared Ridge Regression, Random Forest, and XGBoost algorithms; optimized hyperparameters using `RandomizedSearchCV`.
 
 ---
 
-## 🚀 Kurulum ve Çalıştırma
+## 🚀 Installation and Usage
 
-### 1. Depoyu Klonlayın ve Ortamı Kurun
+### 1. Clone the Repository and Set Up the Environment
 ```bash
-git clone https://github.com/kullanici-adiniz/hospital-length-of-stay-prediction.git
+git clone [https://github.com/falcon326/hospital-length-of-stay-prediction.git](https://github.com/falcon326/hospital-length-of-stay-prediction.git)
 cd hospital-length-of-stay-prediction
 
 python -m venv venv
-# Windows için:
+# For Windows:
 venv\Scripts\activate
-# Mac/Linux için:
+# For Mac/Linux:
 source venv/bin/activate
 
 pip install -r requirements.txt
